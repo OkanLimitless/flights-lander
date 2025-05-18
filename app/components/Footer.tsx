@@ -10,13 +10,13 @@ const Footer = () => {
         <div className="mb-8">
           <h3 className="text-sm font-bold text-gray-600 mb-4 text-center">TRUSTED BY MAJOR AIRLINES</h3>
           <div className="grid grid-cols-5 gap-2">
-            {/* Airline logos */}
+            {/* Use text for airline logos instead of potentially problematic SVGs */}
             {['DELTA', 'UNITED', 'AMERICAN', 'SOUTHWEST', 'JETBLUE'].map((airline, index) => (
               <div 
                 key={index} 
                 className="h-10 flex items-center justify-center bg-gray-50 rounded-md px-1 border border-gray-100"
               >
-                <div className="text-gray-600 text-xs font-bold">{airline}</div>
+                <div className="text-gray-700 text-xs font-bold">{airline}</div>
               </div>
             ))}
           </div>

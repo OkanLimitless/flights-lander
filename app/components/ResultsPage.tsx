@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CallToAction from './CallToAction';
+import Image from 'next/image';
 
 const ResultsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -126,10 +127,9 @@ const ResultsPage = () => {
         <div key={flight.id} className="bg-white rounded-lg shadow-md p-4 mb-4 card-hover">
           <div className="flex justify-between items-center mb-3 pb-2 border-b border-gray-100">
             <div className="flex items-center">
-              <div className="w-6 h-6 mr-2 rounded-full bg-gray-100 p-1">
-                <svg className="w-full h-full text-gray-500" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M21.5 14.98c-.02 0-.03 0-.05.01A10.44 10.44 0 0113 18c-5.52 0-10-4.48-10-10S7.48 0 13 0s10 4.48 10 10c0 1.84-.5 3.65-1.45 5.23-.01.01-.01.02-.01.02 0 .01.01.02.01.03l.84 2.05c.04.1.03.22-.03.31-.06.09-.16.14-.27.14-.01 0-.02 0-.03 0l-2.03-.4c-.01 0-.02-.01-.04-.01-.04 0-.08.01-.12.03A9.98 9.98 0 0113 18c-5.17 0-9.45-3.97-9.95-9h18c-.33 3.38-2.01 6.25-4.43 8.11l.45 2.5c.02.1 0 .21-.07.29-.05.06-.12.1-.2.1h-.02l-2.15-.38c-.09.08-.18.16-.28.23-.05.05-.12.07-.19.07-.02 0-.04 0-.06-.01l-1.78-.7c-.1-.04-.17-.12-.19-.22s0-.21.07-.28l.9-1.01c.04-.04.09-.07.14-.08.06-.01.12 0 .18.03l1.57.62c.13-.12.26-.23.38-.36zm-1.61-2.68c.69-.98 1.09-2.17 1.09-3.3 0-.16.01-.32.01-.48h1.53c-.08 1.37-.49 2.63-1.13 3.78h-1.5z" />
-                </svg>
+              <div className="w-8 h-8 mr-2 overflow-hidden flex items-center justify-center">
+                {/* Use text fallback if image fails to load */}
+                <div className="text-sm font-bold text-gray-500">{flight.airline.charAt(0)}</div>
               </div>
               <span className="font-bold text-gray-800">{flight.airline}</span>
             </div>

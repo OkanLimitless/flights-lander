@@ -15,12 +15,12 @@ export default function Home() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50">
+      {/* Use a simple gradient background instead of the problematic SVG pattern */}
       <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-transparent h-64 z-0"></div>
-      <div className="absolute inset-0 bg-[url('/pattern.svg')] bg-repeat opacity-5 z-0 pointer-events-none"></div>
       
       <Header />
       
-      <main className="flex-grow px-4 py-6 z-10">
+      <main className="flex-grow px-4 py-6 z-10 relative">
         {currentStep === 'search' ? (
           <div className="animate-fade-in">
             <div className="text-center mb-6">
