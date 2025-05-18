@@ -46,6 +46,18 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
   const departureAirport = searchData?.departureCode ? getAirportByCode(searchData.departureCode) : null;
   const destinationAirport = searchData?.destinationCode ? getAirportByCode(searchData.destinationCode) : null;
   
+  // Calculate trip duration if roundtrip
+  const tripDuration = (() => {
+    if (searchData?.date && searchData?.returnDate && searchData.tripType === 'roundtrip') {
+      const departureDate = new Date(searchData.date);
+      const returnDate = new Date(searchData.returnDate);
+      const diffTime = Math.abs(returnDate.getTime() - departureDate.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return diffDays;
+    }
+    return null;
+  })();
+  
   // Format the display route
   const routeDisplay = searchData ? 
     `${departureAirport?.city || 'Origin'} (${searchData.departureCode}) → ${destinationAirport?.city || 'Destination'} (${searchData.destinationCode})` :
@@ -272,12 +284,19 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
         </div>
         <p className="text-sm text-gray-600 mt-1">Sorted by best value • {routeDisplay}</p>
         {searchData?.date && (
-          <p className="text-xs text-gray-500 mt-1">
-            {new Date(searchData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-            {searchData.returnDate && searchData.tripType === 'roundtrip' ? 
-              ` - ${new Date(searchData.returnDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}` : 
-              ''}
-          </p>
+          <div className="mt-1">
+            <p className="text-xs text-gray-500">
+              {new Date(searchData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+              {searchData.returnDate && searchData.tripType === 'roundtrip' ? 
+                ` - ${new Date(searchData.returnDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}` : 
+                ''}
+            </p>
+            {tripDuration !== null && (
+              <p className="text-xs font-medium text-sky-600">
+                {tripDuration === 0 ? 'Same day' : tripDuration === 1 ? '1 day trip' : `${tripDuration} days trip`}
+              </p>
+            )}
+          </div>
         )}
       </div>
 

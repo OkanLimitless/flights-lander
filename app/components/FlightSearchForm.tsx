@@ -27,6 +27,9 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
     passengers: '1',
     tripType: 'roundtrip'
   });
+  
+  // Trip duration calculation
+  const [tripDuration, setTripDuration] = useState<number | null>(null);
 
   // Search functionality
   const [departureQuery, setDepartureQuery] = useState('');
@@ -51,7 +54,44 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
 
   const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    
+    if (name === 'date') {
+      // When changing departure date, 
+      // if return date is empty or before the new departure date, update it
+      const updatedFormData = { ...formData, [name]: value };
+      
+      if (formData.tripType === 'roundtrip') {
+        const departureDate = new Date(value);
+        
+        // If return date is empty or is now before departure date, set it to departure date
+        if (!formData.returnDate || new Date(formData.returnDate) < departureDate) {
+          updatedFormData.returnDate = value;
+        }
+        
+        // Calculate trip duration if both dates are set
+        if (updatedFormData.returnDate) {
+          const returnDate = new Date(updatedFormData.returnDate);
+          const diffTime = Math.abs(returnDate.getTime() - departureDate.getTime());
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+          setTripDuration(diffDays);
+        }
+      }
+      
+      setFormData(updatedFormData);
+    } else if (name === 'returnDate') {
+      // When changing return date, update trip duration
+      setFormData(prev => ({ ...prev, [name]: value }));
+      
+      if (formData.date && value) {
+        const departureDate = new Date(formData.date);
+        const returnDate = new Date(value);
+        const diffTime = Math.abs(returnDate.getTime() - departureDate.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        setTripDuration(diffDays);
+      }
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleDepartureSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -303,15 +343,23 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                   type="date"
                   value={formData.date}
                   onChange={handleDateChange}
+                  min={new Date().toISOString().split('T')[0]}
                   required
                 />
               </div>
             </div>
             {formData.tripType === 'roundtrip' && (
               <div>
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="returnDate">
-                  Return Date
-                </label>
+                <div className="flex justify-between items-center">
+                  <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="returnDate">
+                    Return Date
+                  </label>
+                  {tripDuration !== null && (
+                    <span className="text-xs font-medium text-sky-600 mb-2">
+                      {tripDuration === 0 ? 'Same day' : tripDuration === 1 ? '1 day trip' : `${tripDuration} days trip`}
+                    </span>
+                  )}
+                </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                     <FaCalendarAlt className="h-5 w-5 text-gray-400" />
@@ -323,6 +371,8 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                     type="date"
                     value={formData.returnDate || ''}
                     onChange={handleDateChange}
+                    min={formData.date || new Date().toISOString().split('T')[0]}
+                    required={formData.tripType === 'roundtrip'}
                   />
                 </div>
               </div>
