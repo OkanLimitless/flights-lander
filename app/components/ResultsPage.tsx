@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CallToAction from './CallToAction';
-import { FaPhoneAlt, FaInfoCircle, FaPlane, FaArrowRight, FaCheck } from 'react-icons/fa';
+import { FaPhoneAlt, FaInfoCircle, FaPlane, FaArrowRight, FaCheck, FaGift, FaStar, FaTag } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { generateFakeFlightResults, getAirportByCode } from '../data/airports';
 
@@ -38,6 +38,9 @@ interface ResultsPageProps {
 const ResultsPage = ({ searchData }: ResultsPageProps) => {
   const [loading, setLoading] = useState(true);
   const [showCallPrompt, setShowCallPrompt] = useState(false);
+  const [hasClosedInitialPrompt, setHasClosedInitialPrompt] = useState(false);
+  const [showFlightSelectionPrompt, setShowFlightSelectionPrompt] = useState(false);
+  const [selectedFlight, setSelectedFlight] = useState<FlightResult | null>(null);
   const [flights, setFlights] = useState<FlightResult[]>([]);
   
   const departureAirport = searchData?.departureCode ? getAirportByCode(searchData.departureCode) : null;
@@ -117,6 +120,25 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
     };
   }, [searchData]);
 
+  // Handle flight selection
+  const handleFlightSelect = (flight: FlightResult) => {
+    setSelectedFlight(flight);
+    
+    // If user previously declined the call prompt, show the flight selection prompt
+    if (hasClosedInitialPrompt) {
+      setShowFlightSelectionPrompt(true);
+    } else {
+      // Just show the call prompt if they haven't seen it yet
+      setShowCallPrompt(true);
+    }
+  };
+
+  // Handle closing the initial call prompt
+  const closeInitialPrompt = () => {
+    setShowCallPrompt(false);
+    setHasClosedInitialPrompt(true);
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center p-6 min-h-[300px]">
@@ -128,6 +150,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
 
   return (
     <div className="w-full max-w-md mx-auto animate-fade-in">
+      {/* Initial Call Prompt */}
       {showCallPrompt ? (
         <motion.div 
           initial={{ opacity: 0 }}
@@ -160,11 +183,82 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
               <CallToAction text="Call Now For Better Deals" />
             </div>
             <button 
-              onClick={() => setShowCallPrompt(false)}
+              onClick={closeInitialPrompt}
               className="text-sm text-gray-500 w-full text-center mt-3 py-2"
             >
               Continue without calling
             </button>
+          </motion.div>
+        </motion.div>
+      ) : null}
+
+      {/* Flight Selection Prompt - Shown when a user selects a flight after declining the initial call */}
+      {showFlightSelectionPrompt && selectedFlight ? (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50"
+        >
+          <motion.div 
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ type: "spring", damping: 15 }}
+            className="bg-white rounded-xl p-6 max-w-sm w-full shadow-floating"
+          >
+            <div className="text-center mb-4">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-green-100 to-sky-100 mb-4 shadow-sm">
+                <FaTag className="h-7 w-7 text-green-600" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-800">Price Drop Alert!</h3>
+              <div className="flex justify-center items-center gap-1 mt-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <FaStar key={star} className="text-amber-400 h-4 w-4" />
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-green-50 border border-green-100 rounded-lg p-4 mb-4">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">{selectedFlight.airline}</p>
+                  <p className="text-lg font-bold text-gray-800">
+                    {selectedFlight.departureCode} → {selectedFlight.arrivalCode}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <p className="text-xs line-through text-gray-400">{selectedFlight.originalPrice}</p>
+                  <p className="text-xl font-bold text-green-600">{selectedFlight.price}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="mb-5">
+              <div className="flex items-center mb-2">
+                <FaGift className="h-4 w-4 text-sky-600 mr-2" />
+                <p className="text-sm font-medium text-gray-700">Limited-time phone offer available!</p>
+              </div>
+              <p className="text-gray-600 text-sm mb-2">
+                Our system just detected a <span className="font-bold text-green-600">flash sale</span> for this flight! This special pricing is only available through our call center.
+              </p>
+              <p className="text-gray-600 text-sm">
+                Call now to lock in this rate before it expires!
+              </p>
+            </div>
+            
+            <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg p-3 mb-4 text-center shadow-sm">
+              <p className="text-lg font-bold text-sky-700">+1 (855) 792-0748</p>
+              <p className="text-xs text-sky-600 mt-1 font-medium">Mention booking code: {selectedFlight.departureCode}{selectedFlight.arrivalCode}-SAVE{Math.floor(Math.random() * 900) + 100}</p>
+            </div>
+
+            <div className="space-y-2">
+              <CallToAction text="Call To Book Now" />
+              <button 
+                onClick={() => setShowFlightSelectionPrompt(false)}
+                className="text-sm text-gray-500 w-full text-center py-2 hover:underline"
+              >
+                Return to search results
+              </button>
+            </div>
           </motion.div>
         </motion.div>
       ) : null}
@@ -234,7 +328,10 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
           </div>
           
           <div className="flex space-x-2">
-            <button className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 active-feedback transition">
+            <button 
+              onClick={() => handleFlightSelect(flight)}
+              className="flex-1 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 active-feedback transition"
+            >
               Select
             </button>
             <button className="px-3 py-2.5 border border-sky-600 text-sky-600 hover:bg-sky-50 font-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-sky-500 active-feedback transition">
