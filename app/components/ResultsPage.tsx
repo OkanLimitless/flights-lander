@@ -55,9 +55,7 @@ const ResultsPage = () => {
     };
   }, []);
 
-  const handleCallNow = () => {
-    window.location.href = `tel:+18557920748`;
-  };
+
 
   if (loading) {
     return (

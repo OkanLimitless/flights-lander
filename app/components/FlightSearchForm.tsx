@@ -162,7 +162,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
               </select>
             </div>
             <p className="text-sm text-gray-600 mb-4">
-              We're searching for the best deals across all major airlines. Ready to find your perfect flight?
+              We&apos;re searching for the best deals across all major airlines. Ready to find your perfect flight?
             </p>
           </div>
         )}
