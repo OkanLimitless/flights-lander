@@ -5,55 +5,74 @@ import CallToAction from './CallToAction';
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-50 py-6 px-4">
+    <footer className="bg-white border-t border-gray-200 py-8 px-4 mt-8">
       <div className="max-w-md mx-auto">
-        <div className="mb-6">
-          <h3 className="text-sm font-bold text-gray-600 mb-3 text-center">TRUSTED BY MAJOR AIRLINES</h3>
-          <div className="flex justify-between items-center">
-            {/* Simple airline logo representations */}
-            <div className="text-gray-500 text-xs font-bold">DELTA</div>
-            <div className="text-gray-500 text-xs font-bold">AMERICAN</div>
-            <div className="text-gray-500 text-xs font-bold">UNITED</div>
-            <div className="text-gray-500 text-xs font-bold">SOUTHWEST</div>
-            <div className="text-gray-500 text-xs font-bold">JETBLUE</div>
+        <div className="mb-8">
+          <h3 className="text-sm font-bold text-gray-600 mb-4 text-center">TRUSTED BY MAJOR AIRLINES</h3>
+          <div className="grid grid-cols-5 gap-2">
+            {/* Airline logos */}
+            {['DELTA', 'UNITED', 'AMERICAN', 'SOUTHWEST', 'JETBLUE'].map((airline, index) => (
+              <div 
+                key={index} 
+                className="h-10 flex items-center justify-center bg-gray-50 rounded-md px-1 border border-gray-100"
+              >
+                <div className="text-gray-600 text-xs font-bold">{airline}</div>
+              </div>
+            ))}
           </div>
         </div>
         
-        <div className="border-t border-gray-200 pt-4 mb-4">
-          <div className="flex justify-center space-x-4 mb-4">
-            <div className="bg-white p-2 rounded-full shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
+        <div className="border-t border-gray-200 pt-6 mb-6">
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            <div className="flex flex-col items-center">
+              <div className="bg-gradient-to-b from-blue-50 to-white p-3 rounded-full shadow-sm mb-2 border border-blue-100">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <span className="text-xs text-gray-600 font-medium">Secure Booking</span>
             </div>
-            <div className="bg-white p-2 rounded-full shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-blue-600" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
+            
+            <div className="flex flex-col items-center">
+              <div className="bg-gradient-to-b from-green-50 to-white p-3 rounded-full shadow-sm mb-2 border border-green-100">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                </svg>
+              </div>
+              <span className="text-xs text-gray-600 font-medium">Best Price Guarantee</span>
             </div>
-            <div className="bg-white p-2 rounded-full shadow-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clipRule="evenodd" />
-              </svg>
+            
+            <div className="flex flex-col items-center">
+              <div className="bg-gradient-to-b from-yellow-50 to-white p-3 rounded-full shadow-sm mb-2 border border-yellow-100">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-yellow-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span className="text-xs text-gray-600 font-medium">24/7 Support</span>
             </div>
           </div>
           
-          <div className="text-center text-sm text-gray-600 mb-4">
-            <p className="font-bold mb-2">Need Help? Contact Us:</p>
-            <CallToAction variant="inline" />
-            <p className="text-xs text-gray-500 mt-1">Available 24/7</p>
+          <div className="bg-blue-50 rounded-lg p-4 mb-6 text-center border border-blue-100">
+            <p className="font-bold text-blue-800 mb-2">Need Help? Contact Us:</p>
+            <div className="inline-block">
+              <CallToAction variant="inline" />
+            </div>
+            <p className="text-xs text-blue-600 mt-1 font-medium">Travel agents available 24/7</p>
           </div>
         </div>
         
         <div className="text-center text-xs text-gray-500">
-          <p className="mb-2">
+          <p className="mb-3">
             &copy; {new Date().getFullYear()} FlightsDeal. All rights reserved.
           </p>
-          <div className="flex justify-center space-x-3">
-            <a href="#" className="hover:text-gray-700">Privacy Policy</a>
-            <a href="#" className="hover:text-gray-700">Terms of Service</a>
-            <a href="#" className="hover:text-gray-700">Contact</a>
+          <div className="flex justify-center space-x-4 mb-4">
+            <a href="#" className="text-gray-600 hover:text-gray-800 transition">Privacy Policy</a>
+            <a href="#" className="text-gray-600 hover:text-gray-800 transition">Terms of Service</a>
+            <a href="#" className="text-gray-600 hover:text-gray-800 transition">Contact</a>
           </div>
+          <p className="text-gray-400 text-[10px] max-w-xs mx-auto">
+            This site is not affiliated with any airline. Prices shown may vary and are subject to availability. Additional terms may apply.
+          </p>
         </div>
       </div>
     </footer>
