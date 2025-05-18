@@ -216,7 +216,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                   <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  className="form-input pl-12"
+                  className="form-input !pl-12"
                   id="departure"
                   name="departure"
                   type="text"
@@ -254,7 +254,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                   <FaMapMarkerAlt className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  className="form-input pl-12"
+                  className="form-input !pl-12"
                   id="destination"
                   name="destination"
                   type="text"
@@ -297,7 +297,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                   <FaCalendarAlt className="h-5 w-5 text-gray-400" />
                 </div>
                 <input
-                  className="form-input pl-12"
+                  className="form-input !pl-12"
                   id="date"
                   name="date"
                   type="date"
@@ -317,7 +317,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                     <FaCalendarAlt className="h-5 w-5 text-gray-400" />
                   </div>
                   <input
-                    className="form-input pl-12"
+                    className="form-input !pl-12"
                     id="returnDate"
                     name="returnDate"
                     type="date"
@@ -341,7 +341,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormDat
                   <FaUser className="h-5 w-5 text-gray-400" />
                 </div>
                 <select
-                  className="form-select pl-12"
+                  className="form-select !pl-12"
                   id="passengers"
                   name="passengers"
                   value={formData.passengers}
