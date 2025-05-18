@@ -4,58 +4,106 @@ import React, { useState, useEffect } from 'react';
 import CallToAction from './CallToAction';
 import { FaPhoneAlt, FaInfoCircle, FaPlane, FaArrowRight, FaCheck } from 'react-icons/fa';
 import { motion } from 'framer-motion';
+import { generateFakeFlightResults, getAirportByCode } from '../data/airports';
 
-const ResultsPage = () => {
+interface FlightFormData {
+  departureCode: string;
+  departureName: string;
+  destinationCode: string;
+  destinationName: string;
+  date: string;
+  returnDate?: string;
+  passengers: string;
+  tripType: 'roundtrip' | 'oneway';
+}
+
+interface FlightResult {
+  id: number;
+  airline: string;
+  price: string;
+  originalPrice: string;
+  duration: string;
+  departure: string;
+  departureCode: string;
+  arrival: string;
+  arrivalCode: string;
+  stops: string;
+  logo: string;
+}
+
+interface ResultsPageProps {
+  searchData?: FlightFormData;
+}
+
+const ResultsPage = ({ searchData }: ResultsPageProps) => {
   const [loading, setLoading] = useState(true);
   const [showCallPrompt, setShowCallPrompt] = useState(false);
+  const [flights, setFlights] = useState<FlightResult[]>([]);
   
-  // Fake flight results
-  const flights = [
-    {
-      id: 1,
-      airline: 'Delta Airlines',
-      price: '$489',
-      originalPrice: '$639',
-      duration: '2h 45m',
-      departure: '8:30 AM',
-      departureCode: 'JFK',
-      arrival: '11:15 AM',
-      arrivalCode: 'LAX',
-      stops: 'Nonstop',
-      logo: '/delta-logo.svg'
-    },
-    {
-      id: 2,
-      airline: 'American Airlines',
-      price: '$512',
-      originalPrice: '$689',
-      duration: '3h 10m',
-      departure: '11:45 AM',
-      departureCode: 'JFK',
-      arrival: '2:55 PM',
-      arrivalCode: 'LAX',
-      stops: '1 stop (ATL)',
-      logo: '/american-logo.svg'
-    },
-    {
-      id: 3,
-      airline: 'United Airlines',
-      price: '$472',
-      originalPrice: '$599',
-      duration: '3h 30m',
-      departure: '2:15 PM',
-      departureCode: 'JFK',
-      arrival: '5:45 PM',
-      arrivalCode: 'LAX',
-      stops: 'Nonstop',
-      logo: '/united-logo.svg'
-    }
-  ];
+  const departureAirport = searchData?.departureCode ? getAirportByCode(searchData.departureCode) : null;
+  const destinationAirport = searchData?.destinationCode ? getAirportByCode(searchData.destinationCode) : null;
+  
+  // Format the display route
+  const routeDisplay = searchData ? 
+    `${departureAirport?.city || 'Origin'} (${searchData.departureCode}) → ${destinationAirport?.city || 'Destination'} (${searchData.destinationCode})` :
+    'JFK → LAX';
 
   useEffect(() => {
     // Simulate loading results
     const timer = setTimeout(() => {
       setLoading(false);
+      
+      // Generate flight results based on search data if available
+      if (searchData?.departureCode && searchData?.destinationCode) {
+        const generatedFlights = generateFakeFlightResults(
+          searchData.departureCode,
+          searchData.destinationCode
+        );
+        setFlights(generatedFlights);
+      } else {
+        // Fallback to default sample flights
+        setFlights([
+          {
+            id: 1,
+            airline: 'Delta Airlines',
+            price: '$489',
+            originalPrice: '$639',
+            duration: '2h 45m',
+            departure: '8:30 AM',
+            departureCode: 'JFK',
+            arrival: '11:15 AM',
+            arrivalCode: 'LAX',
+            stops: 'Nonstop',
+            logo: '/delta-logo.svg'
+          },
+          {
+            id: 2,
+            airline: 'American Airlines',
+            price: '$512',
+            originalPrice: '$689',
+            duration: '3h 10m',
+            departure: '11:45 AM',
+            departureCode: 'JFK',
+            arrival: '2:55 PM',
+            arrivalCode: 'LAX',
+            stops: '1 stop (ATL)',
+            logo: '/american-logo.svg'
+          },
+          {
+            id: 3,
+            airline: 'United Airlines',
+            price: '$472',
+            originalPrice: '$599',
+            duration: '3h 30m',
+            departure: '2:15 PM',
+            departureCode: 'JFK',
+            arrival: '5:45 PM',
+            arrivalCode: 'LAX',
+            stops: 'Nonstop',
+            logo: '/united-logo.svg'
+          }
+        ]);
+      }
     }, 2000);
 
     // After showing results for a bit, show the call prompt
@@ -67,7 +115,7 @@ const ResultsPage = () => {
       clearTimeout(timer);
       clearTimeout(promptTimer);
     };
-  }, []);
+  }, [searchData]);
 
   if (loading) {
     return (
@@ -125,10 +173,18 @@ const ResultsPage = () => {
         <div className="flex justify-between items-center">
           <h2 className="text-lg font-bold text-gray-800">Available Flights</h2>
           <div className="bg-sky-100 rounded-full px-2.5 py-1 text-xs font-medium text-sky-800">
-            3 results
+            {flights.length} results
           </div>
         </div>
-        <p className="text-sm text-gray-600 mt-1">Sorted by best value • JFK → LAX</p>
+        <p className="text-sm text-gray-600 mt-1">Sorted by best value • {routeDisplay}</p>
+        {searchData?.date && (
+          <p className="text-xs text-gray-500 mt-1">
+            {new Date(searchData.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
+            {searchData.returnDate && searchData.tripType === 'roundtrip' ? 
+              ` - ${new Date(searchData.returnDate).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}` : 
+              ''}
+          </p>
+        )}
       </div>
 
       {flights.map((flight, index) => (

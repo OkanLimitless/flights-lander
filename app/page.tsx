@@ -7,10 +7,24 @@ import ResultsPage from './components/ResultsPage';
 import Footer from './components/Footer';
 import { FaInfoCircle, FaCheckCircle } from 'react-icons/fa';
 
+// Define the flight form data interface
+interface FlightFormData {
+  departureCode: string;
+  departureName: string;
+  destinationCode: string;
+  destinationName: string;
+  date: string;
+  returnDate?: string;
+  passengers: string;
+  tripType: 'roundtrip' | 'oneway';
+}
+
 export default function Home() {
   const [currentStep, setCurrentStep] = useState<'search' | 'results'>('search');
+  const [flightFormData, setFlightFormData] = useState<FlightFormData | undefined>(undefined);
 
-  const handleSearchComplete = () => {
+  const handleSearchComplete = (formData: FlightFormData) => {
+    setFlightFormData(formData);
     setCurrentStep('results');
   };
 
@@ -52,7 +66,7 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <ResultsPage />
+          <ResultsPage searchData={flightFormData} />
         )}
       </main>
       

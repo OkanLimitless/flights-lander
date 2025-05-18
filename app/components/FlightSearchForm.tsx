@@ -1,29 +1,130 @@
 'use client';
 
-import React, { useState } from 'react';
-import { FaPlane, FaMapMarkerAlt, FaCalendarAlt, FaUser, FaInfoCircle, FaExchangeAlt, FaArrowRight, FaArrowLeft, FaCheckCircle } from 'react-icons/fa';
+import React, { useState, useRef, useEffect } from 'react';
+import { FaPlane, FaMapMarkerAlt, FaCalendarAlt, FaUser, FaInfoCircle, FaExchangeAlt, FaArrowRight, FaCheckCircle } from 'react-icons/fa';
+import { searchAirports, type Airport } from '../data/airports';
 
-const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
+// Define a more specific form data type
+interface FlightFormData {
+  departureCode: string;
+  departureName: string;
+  destinationCode: string;
+  destinationName: string;
+  date: string;
+  returnDate?: string;
+  passengers: string;
+  tripType: 'roundtrip' | 'oneway';
+}
+
+const FlightSearchForm = ({ onComplete }: { onComplete: (formData: FlightFormData) => void }) => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    departure: '',
-    destination: '',
+  const [formData, setFormData] = useState<FlightFormData>({
+    departureCode: '',
+    departureName: '',
+    destinationCode: '',
+    destinationName: '',
     date: '',
     passengers: '1',
     tripType: 'roundtrip'
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  // Search functionality
+  const [departureQuery, setDepartureQuery] = useState('');
+  const [destinationQuery, setDestinationQuery] = useState('');
+  const [departureResults, setDepartureResults] = useState<Airport[]>([]);
+  const [destinationResults, setDestinationResults] = useState<Airport[]>([]);
+  const [showDepartureDropdown, setShowDepartureDropdown] = useState(false);
+  const [showDestinationDropdown, setShowDestinationDropdown] = useState(false);
+  
+  const departureRef = useRef<HTMLDivElement>(null);
+  const destinationRef = useRef<HTMLDivElement>(null);
+
+  const handleTripTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
+
+  const handlePassengersChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleDepartureSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setDepartureQuery(query);
+    
+    if (query.length >= 2) {
+      const results = searchAirports(query);
+      setDepartureResults(results);
+      setShowDepartureDropdown(true);
+    } else {
+      setDepartureResults([]);
+      setShowDepartureDropdown(false);
+    }
+  };
+
+  const handleDestinationSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const query = e.target.value;
+    setDestinationQuery(query);
+    
+    if (query.length >= 2) {
+      const results = searchAirports(query);
+      setDestinationResults(results);
+      setShowDestinationDropdown(true);
+    } else {
+      setDestinationResults([]);
+      setShowDestinationDropdown(false);
+    }
+  };
+
+  const selectDepartureAirport = (airport: Airport) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      departureCode: airport.code,
+      departureName: `${airport.city} (${airport.code})`
+    }));
+    setDepartureQuery(`${airport.city} (${airport.code})`);
+    setShowDepartureDropdown(false);
+  };
+
+  const selectDestinationAirport = (airport: Airport) => {
+    setFormData(prev => ({ 
+      ...prev, 
+      destinationCode: airport.code,
+      destinationName: `${airport.city} (${airport.code})`
+    }));
+    setDestinationQuery(`${airport.city} (${airport.code})`);
+    setShowDestinationDropdown(false);
+  };
+
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (departureRef.current && !departureRef.current.contains(event.target as Node)) {
+        setShowDepartureDropdown(false);
+      }
+      if (destinationRef.current && !destinationRef.current.contains(event.target as Node)) {
+        setShowDestinationDropdown(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
     if (step < 3) {
       setStep(step + 1);
     } else {
-      onComplete();
+      onComplete(formData);
     }
   };
 
@@ -77,7 +178,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                     name="tripType"
                     value="roundtrip"
                     checked={formData.tripType === 'roundtrip'}
-                    onChange={handleChange}
+                    onChange={handleTripTypeChange}
                     className="sr-only"
                   />
                   <div>
@@ -96,7 +197,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                     name="tripType"
                     value="oneway"
                     checked={formData.tripType === 'oneway'}
-                    onChange={handleChange}
+                    onChange={handleTripTypeChange}
                     className="sr-only"
                   />
                   <div>
@@ -106,7 +207,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                 </label>
               </div>
             </div>
-            <div>
+            <div ref={departureRef} className="relative">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="departure">
                 From
               </label>
@@ -120,13 +221,31 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                   name="departure"
                   type="text"
                   placeholder="City or Airport"
-                  value={formData.departure}
-                  onChange={handleChange}
+                  value={departureQuery}
+                  onChange={handleDepartureSearch}
+                  onFocus={() => departureResults.length > 0 && setShowDepartureDropdown(true)}
                   required
                 />
               </div>
+              {showDepartureDropdown && departureResults.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                  {departureResults.map(airport => (
+                    <div 
+                      key={airport.code}
+                      className="px-4 py-2 hover:bg-sky-50 cursor-pointer flex justify-between items-center"
+                      onClick={() => selectDepartureAirport(airport)}
+                    >
+                      <div>
+                        <div className="font-medium">{airport.city} ({airport.code})</div>
+                        <div className="text-xs text-gray-500">{airport.name}</div>
+                      </div>
+                      <div className="text-xs font-medium text-gray-500">{airport.country}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
-            <div>
+            <div ref={destinationRef} className="relative">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="destination">
                 To
               </label>
@@ -140,11 +259,29 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                   name="destination"
                   type="text"
                   placeholder="City or Airport"
-                  value={formData.destination}
-                  onChange={handleChange}
+                  value={destinationQuery}
+                  onChange={handleDestinationSearch}
+                  onFocus={() => destinationResults.length > 0 && setShowDestinationDropdown(true)}
                   required
                 />
               </div>
+              {showDestinationDropdown && destinationResults.length > 0 && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                  {destinationResults.map(airport => (
+                    <div 
+                      key={airport.code}
+                      className="px-4 py-2 hover:bg-sky-50 cursor-pointer flex justify-between items-center"
+                      onClick={() => selectDestinationAirport(airport)}
+                    >
+                      <div>
+                        <div className="font-medium">{airport.city} ({airport.code})</div>
+                        <div className="text-xs text-gray-500">{airport.name}</div>
+                      </div>
+                      <div className="text-xs font-medium text-gray-500">{airport.country}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         )}
@@ -165,7 +302,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                   name="date"
                   type="date"
                   value={formData.date}
-                  onChange={handleChange}
+                  onChange={handleDateChange}
                   required
                 />
               </div>
@@ -184,7 +321,8 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                     id="returnDate"
                     name="returnDate"
                     type="date"
-                    onChange={handleChange}
+                    value={formData.returnDate || ''}
+                    onChange={handleDateChange}
                   />
                 </div>
               </div>
@@ -207,7 +345,7 @@ const FlightSearchForm = ({ onComplete }: { onComplete: () => void }) => {
                   id="passengers"
                   name="passengers"
                   value={formData.passengers}
-                  onChange={handleChange}
+                  onChange={handlePassengersChange}
                   required
                 >
                   {[1, 2, 3, 4, 5, 6, 7, 8].map(num => (
