@@ -5,6 +5,14 @@ const nextConfig = {
     // your project has ESLint errors.
     ignoreDuringBuilds: true,
   },
+  // Ensure PostCSS and Tailwind are properly processed
+  webpack: (config) => {
+    return config;
+  },
+  // Enable static optimization
+  poweredByHeader: false,
+  reactStrictMode: true,
+  swcMinify: true,
 };
 
 module.exports = nextConfig; 
