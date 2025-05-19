@@ -455,9 +455,7 @@ export function generateFakeFlightResults(departureCode: string, arrivalCode: st
   
   for (let i = 0; i < numFlights; i++) {
     const airline = airlines[Math.floor(Math.random() * airlines.length)];
-    const basePrice = Math.floor(Math.random() * 400) + 300; // $300-700
-    const discountAmount = Math.floor(Math.random() * 150) + 50; // $50-200 discount
-    const originalPrice = basePrice + discountAmount;
+    const price = Math.floor(Math.random() * 400) + 300; // $300-700
     
     // Calculate realistic duration
     const duration = calculateRealisticDuration();
@@ -482,8 +480,8 @@ export function generateFakeFlightResults(departureCode: string, arrivalCode: st
     flights.push({
       id: i + 1,
       airline: airline.name,
-      price: `$${basePrice}`,
-      originalPrice: `$${originalPrice}`,
+      price: `$${price}`,
+      originalPrice: `$${price}`,
       duration: `${durationHours}h ${durationMins}m`,
       departure: formatTime(departureTime.hour, departureTime.mins),
       departureCode: departureCode,

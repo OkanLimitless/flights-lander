@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "FlightsDeal - Best Flight Deals & Discounts",
-  description: "Find exclusive flight deals and discounts. Book your next flight with us and save big on travel.",
+  title: "FlightsDeal - Best Flight Deals & Offers",
+  description: "Find exclusive flight deals and offers. Book your next flight with us for the best travel experience.",
 };
 
 export default function RootLayout({

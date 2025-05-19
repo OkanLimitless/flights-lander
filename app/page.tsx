@@ -40,7 +40,7 @@ export default function Home() {
           <div className="animate-fade-in">
             <div className="text-center mb-6">
               <h1 className="heading-1 text-3xl sm:text-4xl mb-2 text-gray-900 font-extrabold">Find Your <span className="text-sky-600">Perfect Flight</span></h1>
-              <p className="text-body max-w-md mx-auto">Search across all major airlines for exclusive deals and discounts</p>
+              <p className="text-body max-w-md mx-auto">Search across all major airlines for exclusive deals and offers</p>
             </div>
             <FlightSearchForm onComplete={handleSearchComplete} />
             
@@ -60,7 +60,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-start">
                   <FaCheckCircle className="h-4 w-4 text-sky-500 mt-0.5 mr-2 flex-shrink-0" />
-                  <span>Special discounts on major airlines</span>
+                  <span>Special offers on major airlines</span>
                 </li>
               </ul>
             </div>

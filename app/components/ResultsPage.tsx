@@ -179,9 +179,9 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-sky-100 to-indigo-100 mb-4 shadow-sm">
                 <FaPhoneAlt className="h-7 w-7 text-sky-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">Exclusive Phone-Only Deals!</h3>
+              <h3 className="text-xl font-bold text-gray-800">Phone-Only Deals Available!</h3>
               <div className="relative mt-3 mx-auto max-w-max">
-                <div className="absolute -top-3 -right-2 bg-gradient-premium text-white text-xs font-bold px-2 py-1 rounded-full">SAVE 30%</div>
+                <div className="absolute -top-3 -right-2 bg-gradient-premium text-white text-xs font-bold px-2 py-1 rounded-full">EXCLUSIVE</div>
                 <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg p-3 mb-2 text-center shadow-sm">
                   <p className="text-lg font-bold text-sky-700">+1 (855) 792-0748</p>
                   <p className="text-xs text-sky-600 mt-1 font-medium">Travel agents available 24/7</p>
@@ -189,7 +189,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
               </div>
             </div>
             <p className="text-gray-600 mb-4 text-center">
-              We found even better deals that are only available by phone! Call now to access exclusive discounts up to 30% off the listed prices.
+              We found even better deals that are only available by phone! Call now to access exclusive offers not available online.
             </p>
             <div className="mb-2">
               <CallToAction text="Call Now For Better Deals" />
@@ -250,7 +250,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
                 <p className="text-sm font-medium text-gray-700">Limited-time phone offer available!</p>
               </div>
               <p className="text-gray-600 text-sm mb-2">
-                Our system just detected a <span className="font-bold text-green-600">flash sale</span> for this flight! This special pricing is only available through our call center.
+                Our system just detected a <span className="font-bold text-green-600">special offer</span> for this flight! This exclusive pricing is only available through our call center.
               </p>
               <p className="text-gray-600 text-sm">
                 Call now to lock in this rate before it expires!
@@ -368,7 +368,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
           <div>
             <h3 className="font-bold text-sky-800 text-lg">Looking for better deals?</h3>
             <p className="text-sky-700 text-sm mt-1 mb-3">
-              Our travel agents have access to exclusive discounts not available online. Call now and save up to 30%!
+              Our travel agents have access to exclusive offers not available online. Call now to find out more!
             </p>
             <div>
               <CallToAction variant="secondary" text="Call +1 (855) 792-0748" />
