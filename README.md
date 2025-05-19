@@ -51,5 +51,5 @@ This site is configured for direct deployment to Vercel from Git.
 The landing page is designed to promote flight booking services and earn commissions through phone call conversions using the following number:
 
 ```
-+1 (855) 792-0748
++1 (866) 226-8984
 ```

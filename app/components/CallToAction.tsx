@@ -13,7 +13,7 @@ const CallToAction = ({
   text = 'Call Now For Exclusive Deals'
 }: CallToActionProps) => {
   const handleCall = () => {
-    window.location.href = `tel:+18557920748`;
+    window.location.href = `tel:+18662268984`;
   };
 
   if (variant === 'inline') {
@@ -27,7 +27,7 @@ const CallToAction = ({
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-30"></span>
           <FaPhone className="h-4 w-4 relative" />
         </div>
-        +1 (855) 792-0748
+        +1 (866) 226-8984
       </button>
     );
   }
