@@ -239,7 +239,12 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
                 </div>
                 <div className="text-right">
                   <p className="text-xs line-through text-gray-400">{selectedFlight.originalPrice}</p>
-                  <p className="text-xl font-bold text-green-600">{selectedFlight.price}</p>
+                  <p className="text-xl font-bold text-green-600">
+                    ${Math.floor(parseInt(selectedFlight.price.substring(1)) * 0.7)}
+                  </p>
+                  <p className="text-xs font-medium text-green-600">
+                    Save ${Math.round(parseInt(selectedFlight.originalPrice.substring(1)) - parseInt(selectedFlight.price.substring(1)) * 0.7)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -316,11 +321,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
               <span className="font-bold text-gray-800">{flight.airline}</span>
             </div>
             <div className="text-right">
-              <div className="flex items-baseline">
-                <span className="text-xs line-through text-gray-400 mr-1">{flight.originalPrice}</span>
-                <span className="text-lg font-bold text-sky-600">{flight.price}</span>
-              </div>
-              <div className="text-xs text-green-600 font-medium">Save ${parseInt(flight.originalPrice.substring(1)) - parseInt(flight.price.substring(1))}</div>
+              <span className="text-lg font-bold text-sky-600">{flight.price}</span>
             </div>
           </div>
           
