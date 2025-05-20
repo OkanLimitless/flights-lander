@@ -27,7 +27,7 @@ const CallToAction = ({
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-30"></span>
           <FaPhone className="h-4 w-4 relative" />
         </div>
-        +1 (866) 226-8984
+        +1 (866) 226-8984 (Toll-Free)
       </button>
     );
   }

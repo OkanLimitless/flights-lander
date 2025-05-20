@@ -184,7 +184,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
                 <div className="absolute -top-3 -right-2 bg-gradient-premium text-white text-xs font-bold px-2 py-1 rounded-full">SAVE 30%</div>
                 <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg p-3 mb-2 text-center shadow-sm">
                   <p className="text-lg font-bold text-sky-700">+1 (866) 226-8984</p>
-                  <p className="text-xs text-sky-600 mt-1 font-medium">Travel agents available 24/7</p>
+                  <p className="text-xs text-sky-600 mt-1 font-medium">Toll-Free • Travel agents available 24/7</p>
                 </div>
               </div>
             </div>
@@ -264,7 +264,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
             
             <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg p-3 mb-4 text-center shadow-sm">
               <p className="text-lg font-bold text-sky-700">+1 (866) 226-8984</p>
-              <p className="text-xs text-sky-600 mt-1 font-medium">Mention booking code: {selectedFlight.departureCode}{selectedFlight.arrivalCode}-SAVE{Math.floor(Math.random() * 900) + 100}</p>
+              <p className="text-xs text-sky-600 mt-1 font-medium">Toll-Free • Mention booking code: {selectedFlight.departureCode}{selectedFlight.arrivalCode}-SAVE{Math.floor(Math.random() * 900) + 100}</p>
             </div>
 
             <div className="space-y-2">
@@ -372,7 +372,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
               Our travel agents have access to exclusive discounts not available online. Call now and save up to 30%!
             </p>
             <div>
-              <CallToAction variant="secondary" text="Call +1 (866) 226-8984" />
+              <CallToAction variant="secondary" text="Call +1 (866) 226-8984 (Toll-Free)" />
             </div>
           </div>
         </div>
