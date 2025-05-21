@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import CallToAction from './CallToAction';
-import { FaPhoneAlt, FaInfoCircle, FaPlane, FaArrowRight, FaCheck, FaGift, FaStar, FaTag } from 'react-icons/fa';
+import { FaPhoneAlt, FaInfoCircle, FaPlane, FaArrowRight, FaCheck, FaGift, FaStar, FaTag, FaCheckCircle } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { generateFakeFlightResults, getAirportByCode } from '../data/airports';
 
@@ -121,10 +121,10 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
       }
     }, 2000);
 
-    // After showing results for a bit, show the call prompt
+    // Show the call prompt immediately after results load
     const promptTimer = setTimeout(() => {
       setShowCallPrompt(true);
-    }, 3500);
+    }, 2500);
 
     return () => {
       clearTimeout(timer);
@@ -167,32 +167,61 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50"
         >
           <motion.div 
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ type: "spring", damping: 15 }}
-            className="bg-white rounded-xl p-6 max-w-sm w-full shadow-floating"
+            className="bg-white rounded-xl p-6 max-w-md w-full shadow-floating"
           >
             <div className="text-center mb-6">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-sky-100 to-indigo-100 mb-4 shadow-sm">
-                <FaPhoneAlt className="h-7 w-7 text-sky-600" />
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-r from-green-500 to-sky-500 mb-4 shadow-md">
+                <FaPhoneAlt className="h-10 w-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">Exclusive Phone-Only Deals!</h3>
-              <div className="relative mt-3 mx-auto max-w-max">
-                <div className="absolute -top-3 -right-2 bg-gradient-premium text-white text-xs font-bold px-2 py-1 rounded-full">SAVE 30%</div>
-                <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg p-3 mb-2 text-center shadow-sm">
-                  <p className="text-lg font-bold text-sky-700">+1 (866) 226-8984</p>
-                  <p className="text-xs text-sky-600 mt-1 font-medium">Toll-Free • Travel agents available 24/7</p>
+              <h3 className="text-2xl font-bold text-gray-800 mb-1">FLASH SALE - 30% OFF!</h3>
+              <p className="text-sm text-gray-600 mb-3">These exclusive deals are only available by phone</p>
+              
+              <div className="relative mt-3 mx-auto max-w-max mb-5">
+                <div className="absolute -top-3 -right-3 bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">SAVE UP TO 30%</div>
+                <div className="bg-gradient-to-r from-green-50 to-sky-50 rounded-lg p-3 mb-2 text-center shadow-sm border border-green-100">
+                  <p className="text-xl font-bold text-sky-700">+1 (866) 226-8984</p>
+                  <p className="text-xs text-green-600 mt-1 font-medium">Toll-Free • Limited Time Offer</p>
+                </div>
+              </div>
+              
+              <div className="bg-green-50 border border-green-100 rounded-lg p-3 mb-4">
+                <div className="flex justify-between items-center mb-1">
+                  <p className="text-sm font-medium text-gray-800">Your Search:</p>
+                  <p className="text-sm font-bold text-green-700">FLASH SALE PRICE</p>
+                </div>
+                <div className="flex justify-between items-center">
+                  <p className="text-xs text-gray-600">{routeDisplay}</p>
+                  <div>
+                    <p className="text-xs line-through text-gray-400">Online: $639</p>
+                    <p className="text-base font-bold text-green-600">Phone Only: $459</p>
+                  </div>
                 </div>
               </div>
             </div>
-            <p className="text-gray-600 mb-4 text-center">
-              We found even better deals that are only available by phone! Call now to access exclusive discounts up to 30% off the listed prices.
-            </p>
+            
+            <div className="mb-4">
+              <div className="flex items-center mb-3">
+                <FaCheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                <p className="text-sm text-gray-700">Agent-exclusive deals not shown online</p>
+              </div>
+              <div className="flex items-center mb-3">
+                <FaCheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                <p className="text-sm text-gray-700">No booking fees when you call</p>
+              </div>
+              <div className="flex items-center">
+                <FaCheckCircle className="h-4 w-4 text-green-500 mr-2 flex-shrink-0" />
+                <p className="text-sm text-gray-700">Access to special airline promotions</p>
+              </div>
+            </div>
+            
             <div className="mb-2">
-              <CallToAction text="Call Now For Better Deals" />
+              <CallToAction text="CALL NOW: SAVE UP TO 30%" />
             </div>
             <button 
               onClick={closeInitialPrompt}
@@ -209,7 +238,7 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50"
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center p-4 z-50"
         >
           <motion.div 
             initial={{ scale: 0.9, opacity: 0 }}
@@ -217,11 +246,17 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
             transition={{ type: "spring", damping: 15 }}
             className="bg-white rounded-xl p-6 max-w-sm w-full shadow-floating"
           >
+            <div className="absolute -top-2 -right-2">
+              <div className="bg-red-600 text-white text-xs font-bold px-2 py-1 rounded-full animate-pulse">
+                BETTER DEAL AVAILABLE
+              </div>
+            </div>
+            
             <div className="text-center mb-4">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-green-100 to-sky-100 mb-4 shadow-sm">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-red-100 to-green-100 mb-4 shadow-sm">
                 <FaTag className="h-7 w-7 text-green-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-800">Price Drop Alert!</h3>
+              <h3 className="text-xl font-bold text-gray-800">Secret Price Found!</h3>
               <div className="flex justify-center items-center gap-1 mt-1">
                 {[1, 2, 3, 4, 5].map((star) => (
                   <FaStar key={star} className="text-amber-400 h-4 w-4" />
@@ -249,33 +284,20 @@ const ResultsPage = ({ searchData }: ResultsPageProps) => {
               </div>
             </div>
 
-            <div className="mb-5">
-              <div className="flex items-center mb-2">
-                <FaGift className="h-4 w-4 text-sky-600 mr-2" />
-                <p className="text-sm font-medium text-gray-700">Limited-time phone offer available!</p>
-              </div>
-              <p className="text-gray-600 text-sm mb-2">
-                Our system just detected a <span className="font-bold text-green-600">special offer</span> for this flight! This exclusive pricing is only available through our call center.
-              </p>
-              <p className="text-gray-600 text-sm">
-                Call now to lock in this rate before it expires!
-              </p>
+            <p className="text-sm text-gray-600 mb-4 text-center">
+              We found an exclusive phone-only deal for this flight! Call now to lock in this special rate before it's gone.
+            </p>
+            
+            <div className="mb-2">
+              <CallToAction text="Call Now To Book This Deal" />
             </div>
             
-            <div className="bg-gradient-to-r from-sky-50 to-indigo-50 rounded-lg p-3 mb-4 text-center shadow-sm">
-              <p className="text-lg font-bold text-sky-700">+1 (866) 226-8984</p>
-              <p className="text-xs text-sky-600 mt-1 font-medium">Toll-Free • Mention booking code: {selectedFlight.departureCode}{selectedFlight.arrivalCode}-SAVE{Math.floor(Math.random() * 900) + 100}</p>
-            </div>
-
-            <div className="space-y-2">
-              <CallToAction text="Call To Book Now" />
-              <button 
-                onClick={() => setShowFlightSelectionPrompt(false)}
-                className="text-sm text-gray-500 w-full text-center py-2 hover:underline"
-              >
-                Return to search results
-              </button>
-            </div>
+            <button 
+              onClick={() => setShowFlightSelectionPrompt(false)}
+              className="text-sm text-gray-500 w-full text-center mt-3 py-2"
+            >
+              No thanks, continue at regular price
+            </button>
           </motion.div>
         </motion.div>
       ) : null}
